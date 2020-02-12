@@ -3,7 +3,6 @@
 (function() {
   var draggedPin = function(evt) {
     evt.preventDefault();
-
     if (window.map.map.classList.contains("map--faded")) {
       window.map.onPinClick();
       window.map.mainPin.removeEventListener("click", window.map.onPinClick);

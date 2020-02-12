@@ -1,67 +1,63 @@
-'use strict';
+"use strict";
 
-(function () {
-  var Url = {
-    LOAD: 'https://js.dump.academy/keksobooking/data',
-    SEND: 'https://js.dump.academy/keksobooking'
-  };
+(function() {
+  var URL_LOAD = "https://js.dump.academy/keksobooking/data";
+  var URL_SEND = "https://js.dump.academy/keksobooking";
   var Code = {
     SUCCESS: 200,
     BAD_REQUEST: 400,
     NOT_FOUND_ERROR: 404,
     BAD_GATEWAY: 502
   };
-  var DescriptionText = {
-    BAD_REQUEST: 'Некорректный запрос',
-    NOT_FOUND_ERROR: 'Ничего не найдено',
-    BAD_GATEWAY: 'Проблемы на стороне сервера',
-    NO_CONNECTION: 'Отсутствует соединение с сетью',
-    ANOTHER_ERROR: 'Сервер ответил кодом '
+
+  var onLoad = function(xhr, onSuccess) {
+    switch (xhr.status) {
+      case Code.SUCCESS:
+        onSuccess();
+        break;
+      case Code.BAD_REQUEST:
+        window.showErrorModal("Некорректный запрос");
+        break;
+      case Code.NOT_FOUND_ERROR:
+        window.showErrorModal("Ничего не найдено");
+        break;
+      case Code.BAD_GATEWAY:
+        window.showErrorModal("Проблемы на стороне сервера");
+        break;
+      default:
+        window.showErrorModal(null);
+    }
   };
-  var HTTPMethod = {
-    GET: 'GET',
-    POST: 'POST'
-  };
-  var createXHR = function (methodRequest, urlRequest, onSuccess) {
+
+  var loadPins = function() {
     var xhr = new XMLHttpRequest();
-    xhr.open(methodRequest, urlRequest);
-    xhr.addEventListener('load', function (evt) {
-      switch (evt.target.status) {
-        case Code.SUCCESS:
-          onSuccess(evt.target.response);
-          break;
-        case Code.BAD_REQUEST:
-          window.modal.showModal(DescriptionText.BAD_REQUEST);
-          break;
-        case Code.NOT_FOUND_ERROR:
-          window.modal.showModal(DescriptionText.NOT_FOUND_ERROR);
-          break;
-        case Code.BAD_GATEWAY:
-          window.modal.showModal(DescriptionText.BAD_GATEWAY);
-          break;
-        default:
-          window.modal.showModal((DescriptionText.ANOTHER_ERROR + evt.target.status));
-      }
-    });
-    xhr.addEventListener('error', function () {
-      window.modal.showModal(DescriptionText.NO_CONNECTION);
-    });
-    return xhr;
-  };
-
-  var loadAds = function (onSuccess) {
-    var xhr = createXHR(HTTPMethod.GET, Url.LOAD, onSuccess);
-    xhr.responseType = 'json';
+    var onSuccess = function() {
+      var fragment = window.renderPins.makeFiledFragment(xhr.response);
+      window.renderPins.similarListAds.appendChild(fragment);
+    };
+    xhr.responseType = "json";
+    xhr.open("GET", URL_LOAD);
     xhr.send();
+    xhr.addEventListener("load", function() {
+      onLoad(xhr, onSuccess);
+    });
+    xhr.addEventListener("error", window.showErrorModal);
   };
 
-  var sendForm = function (data, onSuccess) {
-    var xhr = createXHR(HTTPMethod.POST, Url.SEND, onSuccess);
+  var sendForm = function(data) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", URL_SEND);
     xhr.send(data);
+    var onSuccess = function() {
+      console.log("Данные отправлены");
+    };
+    xhr.addEventListener("load", function() {
+      onLoad(xhr, onSuccess);
+    });
+    xhr.addEventListener("error", window.showErrorModal);
   };
-
   window.back = {
-    loadAds: loadAds,
+    loadPins: loadPins,
     sendForm: sendForm
   };
 })();
