@@ -1,16 +1,22 @@
-'use strict';
+"use strict";
 
-(function () {
-  var ESC = 27;
-  var SUCCESS = 'success';
+(function() {
+  var getRandomInt = function(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
 
-  var transformNodeToArray = function (list) {
-    return Array.from(list);
+  var getShuffleArray = function(values) {
+    for (var i = values.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = values[i];
+      values[i] = values[j];
+      values[j] = temp;
+    }
+    return values;
   };
 
   window.utils = {
-    ESC: ESC,
-    transformNodeToArray: transformNodeToArray,
-    SUCCESS: SUCCESS,
+    getRandomInt: getRandomInt,
+    getShuffleArray: getShuffleArray
   };
 })();

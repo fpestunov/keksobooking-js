@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-(function () {
+(function() {
   var PIN = {
     WIDTH: 62,
-    HEIGHT: 84,
+    HEIGHT: 84
   };
 
   var APPLICATION_WIDTH = {
@@ -15,31 +15,28 @@
     MAX: 630
   };
 
-  var mainPin = document.querySelector('.map__pin--main');
-  var initiallyCoordinate = new window.movePin.Coordinate(mainPin.offsetLeft, mainPin.offsetTop);
-  var map = document.querySelector('.map');
-  var addressField = window.form.adForm.querySelector('#address');
+  var mainPin = document.querySelector(".map__pin--main");
+  var map = document.querySelector(".map");
+  var addressField = window.form.form.querySelector("#address");
   addressField.readOnly = true;
-  addressField.value = mainPin.offsetLeft + ', ' + mainPin.offsetTop;
+  addressField.value = mainPin.offsetLeft + ", " + mainPin.offsetTop;
 
-  var onPinClick = function () {
-    map.classList.remove('map--faded');
-    window.form.adForm.classList.remove('ad-form--disabled');
-    window.form.setDeactivatedForm(false, window.form.adFormFieldsets);
-    window.back.loadAds(window.renderPins.setRenderAllPins);
+  var onPinClick = function() {
+    window.testData.similarListAds.appendChild(window.testData.fragment);
+    map.classList.remove("map--faded");
+    window.form.form.classList.remove("ad-form--disabled");
+    window.form.setDeactivatedForm(false);
   };
 
-  mainPin.addEventListener('click', onPinClick);
-  mainPin.addEventListener('mousedown', window.movePin.draggedPin);
-
-  window.mapContainer = {
-    PIN: PIN,
-    APPLICATION_WIDTH: APPLICATION_WIDTH,
-    APPLICATION_HEIGHT: APPLICATION_HEIGHT,
+  mainPin.addEventListener("click", onPinClick);
+  mainPin.addEventListener("mousedown", window.movePin.draggedPin);
+  window.map = {
     map: map,
+    PIN: PIN,
     mainPin: mainPin,
     onPinClick: onPinClick,
-    addressField: addressField,
-    initiallyCoordinate: initiallyCoordinate,
+    APPLICATION_WIDTH: APPLICATION_WIDTH,
+    APPLICATION_HEIGHT: APPLICATION_HEIGHT,
+    addressField: addressField
   };
 })();
