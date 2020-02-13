@@ -29,13 +29,13 @@
   };
   mainPin.addEventListener("click", onPinClick);
   mainPin.addEventListener("mousedown", window.movePin.draggedPin);
-  window.map = {
-    map: map,
+  window.mapContainer = {
     PIN: PIN,
-    mainPin: mainPin,
-    onPinClick: onPinClick,
     APPLICATION_WIDTH: APPLICATION_WIDTH,
     APPLICATION_HEIGHT: APPLICATION_HEIGHT,
+    map: map,
+    mainPin: mainPin,
+    onPinClick: onPinClick,
     addressField: addressField
   };
 })();
